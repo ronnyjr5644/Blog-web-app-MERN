@@ -5,12 +5,15 @@ const express=require('express');
 
 const dotenv=require('dotenv')
 dotenv.config({path:'./congig.env'});
+const expressSession=require('express-session')
 
 const bodyParser=require('body-parser')  //parses the post req coming from the browser and give it to us in req.body
 
 const app=new express();
 //const { config, engine } = require('express-edge');
-
+app.use(expressSession({
+    secret: 'secret'
+}))
 const mongoose=require('mongoose');
 //app.set('view engine', 'ejs');
 mongoose.connect(process.env.DATABASE,{useNewUrlParser:true,useCreateIndex:true,useFindAndModify:false,useUnifiedTopology: true 
@@ -43,6 +46,8 @@ const storePostController=require('./controllers/storePost')
 const getPostController=require('./controllers/getPost')
 const createUserController=require('./controllers/createUser')
 const storeUserController=require('./controllers/storeUser')
+const loginController=require('./controllers/login')
+const loginUserController=require('./controllers/loginUser')
 
 app.use(express.static('public'));
  //app.use(expressEdge)
@@ -58,14 +63,16 @@ app.use('/postsstore',storePost)
 app.set("view engine","ejs")
 
 app.get('/',homePageController)
+app.get('/authlogin',loginController)
 app.get('/authregister',createUserController)
 app.get('/post/:id',getPostController)
 app.get('/posts',createPostController);
 app.post('/postsstore',storePostController);
 app.post('/userregister',storeUserController);
+app.post('/userlogin',loginUserController)
 
 
 
-app.listen(3003,()=>{
+app.listen(3004,()=>{
     console.log('server started at port 3000');
 })
