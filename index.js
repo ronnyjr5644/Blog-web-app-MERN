@@ -1,4 +1,3 @@
-
 const path=require('path');
 
 require('dotenv').config({ path: './config.env' });
@@ -34,7 +33,17 @@ mongoose.connect(process.env.DATABASE,{useNewUrlParser:true,useCreateIndex:true,
 //     console.log(err);
 // });
 
+
 const Post=require('./database/models/Post')
+
+//controller
+const createPostController=require('./controllers/createPost')
+const homePageController=require('./controllers/homePage')
+const storePostController=require('./controllers/storePost')
+const getPostController=require('./controllers/getPost')
+const createUserController=require('./controllers/createUser')
+const storeUserController=require('./controllers/storeUser')
+
 app.use(express.static('public'));
  //app.use(expressEdge)
  //app.set('views','${__dirname}/views')
@@ -43,37 +52,20 @@ app.use(express.static('public'));
 //app.set('views',`${__dirname}/views`); //name and the currdirectory
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
+
+const storePost=require('./middleware/storePost')
+app.use('/postsstore',storePost)
 app.set("view engine","ejs")
-app.get('/',async(req,res)=>{
-    const posts=await Post.find({});
-    console.log(posts)
-    res.render("index", {posts});
-    //res.sendFile(path.resolve(__dirname,'pages/index.html'),{posts});
-    
-    //res.render('index',{posts})
-})
-app.get('/about',(req,res)=>{
-    
-    res.sendFile(path.resolve(__dirname,'pages/about.html'))
-})
-app.get('/post',(req,res)=>{
 
-    res.sendFile(path.resolve(__dirname,'pages/post.html'))
-})
-app.get('/contact',(req,res)=>{
-    res.sendFile(path.resolve(__dirname,'pages/contact.html'))
-})
-app.get('/posts',(req,res)=>{
-    res.sendFile(path.resolve(__dirname,'pages/create.html'))
-})
-app.post('/postsstore',(req,res)=>{
-    Post.create(req.body,(error,post)=>{
-        res.redirect('/')
-    })
-    // console.log(req.body)
-    // res.redirect('/')
+app.get('/',homePageController)
+app.get('/authregister',createUserController)
+app.get('/post/:id',getPostController)
+app.get('/posts',createPostController);
+app.post('/postsstore',storePostController);
+app.post('/userregister',storeUserController);
 
-})
-app.listen(8098,()=>{
-    console.log('server started at port 8089');
+
+
+app.listen(3003,()=>{
+    console.log('server started at port 3000');
 })

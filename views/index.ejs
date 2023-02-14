@@ -42,14 +42,11 @@
               <a class="nav-link" href="posts">New Post</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about">About</a>
+              <a class="nav-link" href="authregister">Register</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="post">Sample Post</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="contact">Contact</a>
-            </li>
+         
+           
+           
           </ul>
         </div>
       </div>
@@ -79,7 +76,7 @@
             <% for (item of posts) { %>
               <div class="luna">
               <div class="post-preview1">
-                <a href="post.html">
+                <a href="/post/<%= item._id %>">
                   <h2 class="post-title">
                    Title: <%= item.title %>
                   </h2>
@@ -92,13 +89,11 @@
                   </h5>
                 </a>
               </div>
-              <div class="post-preview3">
-                <a href="post.html">
-                  <h5 class="post-title">
-                   Content: <%= item.content %>
-                  </h5>
-                </a>
-              </div>
+              <p class="post-meta">Posted by 
+                <a href="#"><%= item.username %></a>
+                on <%= item.createdAt.toDateString() %>
+              </p>
+              
               </div>
               <br>
               <br>

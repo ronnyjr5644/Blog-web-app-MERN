@@ -9,7 +9,15 @@ const blogSchema=new mongoose.Schema({
     description: String,
     content: {
         type: String,
-        required:[true, 'only string allowed' ] }
+        required:[true, 'only string allowed' ] },
+        username:{
+            type:String,
+            unique: true
+        },
+        createdAt: {
+            type: Date,
+            default: new Date()
+        }
 });
 //linking our schema to our model
 const Blog=mongoose.model('Blog',blogSchema);
