@@ -41,12 +41,21 @@
             <li class="nav-item">
               <a class="nav-link" href="posts">New Post</a>
             </li>
-            <li class="nav-item">
+            //if condition ejs
+            <% if (!auth) { %>
+              <li class="nav-item">
                 <a class="nav-link" href="authlogin">Login</a>
               </li>
             <li class="nav-item">
                 <a class="nav-link" href="authregister">Register</a>
               </li>
+            <% }
+            else { %>
+              <li class="nav-item">
+                <a class="nav-link" href="authlogout">Logout</a>
+              </li>
+            <% }
+             %>
            
            
             
@@ -74,17 +83,29 @@
    <div class="container">
     <div class="row">
         <div class="col-md-8 offset-md-2">
+        
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="alert alert-danger">
+            <ul>
+                <% errors.forEach(function(error) { %>
+                <li><%= error %></li>
+                <% }); %>
+            </ul>
+        </div>
+        <% } %>
+       
+
             <form action="/userregister" method="POST">
               <div class="control-group">
                 <div class="form-group floating-label-form-group controls">
                     <label>Username</label>
-                    <input type="text" placeholder="username...." name="username" class="form-control">
+                    <input type="text"   placeholder="username...." name="username"  class="form-control">
                 </div>
             </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Email</label>
-                        <input type="email" placeholder="email...." name="email" class="form-control">
+                        <input type="email"  placeholder="email...." name="email"  class="form-control">
                     </div>
                 </div>
                 <div class="control-group">

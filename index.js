@@ -2,25 +2,34 @@ const path=require('path');
 
 require('dotenv').config({ path: './config.env' });
 const express=require('express');
-
+const edge=require('edge.js')
 const dotenv=require('dotenv')
 dotenv.config({path:'./congig.env'});
 const expressSession=require('express-session')
-
+const connectMongo=require('connect-mongo')
 const bodyParser=require('body-parser')  //parses the post req coming from the browser and give it to us in req.body
 
-const app=new express();
-//const { config, engine } = require('express-edge');
-app.use(expressSession({
-    secret: 'secret'
-}))
 const mongoose=require('mongoose');
-//app.set('view engine', 'ejs');
+const app=new express();
+
+const connectFlash=require('connect-flash');
+
+
+
+app.use(expressSession({
+  secret: 'secret',
+  
+}));
 mongoose.connect(process.env.DATABASE,{useNewUrlParser:true,useCreateIndex:true,useFindAndModify:false,useUnifiedTopology: true 
 }).then(()=>{
 
     console.log('DB connection successful');
 });
+
+app.use(connectFlash())
+
+//app.set('view engine', 'ejs');
+
 
 
 
@@ -48,6 +57,7 @@ const createUserController=require('./controllers/createUser')
 const storeUserController=require('./controllers/storeUser')
 const loginController=require('./controllers/login')
 const loginUserController=require('./controllers/loginUser')
+const logoutController=require('./controllers/logout')
 
 app.use(express.static('public'));
  //app.use(expressEdge)
@@ -55,24 +65,33 @@ app.use(express.static('public'));
 
 //app.use(expressEdge);     //app.use helps us to add functionality to express
 //app.set('views',`${__dirname}/views`); //name and the currdirectory
+app.use('*', (req, res, next) => {
+  app.locals.auth = req.session.userId
+  next();
+})
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 
 const storePost=require('./middleware/storePost')
-app.use('/postsstore',storePost)
+const auth=require("./middleware/auth");
+const redirectifAuthenticated=require("./middleware/redirectifAuthenticated")
+// app.use('/postsstore',storePost)
+// app.use('/posts',auth)
 app.set("view engine","ejs")
 
 app.get('/',homePageController)
-app.get('/authlogin',loginController)
-app.get('/authregister',createUserController)
+app.get('/authlogin',redirectifAuthenticated,loginController)
+app.get('/authregister',redirectifAuthenticated,createUserController)
+app.get('/authlogout',logoutController)
 app.get('/post/:id',getPostController)
-app.get('/posts',createPostController);
-app.post('/postsstore',storePostController);
-app.post('/userregister',storeUserController);
-app.post('/userlogin',loginUserController)
+app.get('/posts',auth,createPostController);
+app.post('/postsstore',auth,storePost,storePostController);
+app.post('/userregister',redirectifAuthenticated,storeUserController);
+app.post('/userlogin',redirectifAuthenticated,loginUserController)
 
 
 
-app.listen(3004,()=>{
+
+app.listen(3007,()=>{
     console.log('server started at port 3000');
 })

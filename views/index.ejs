@@ -41,12 +41,20 @@
             <li class="nav-item">
               <a class="nav-link" href="posts">New Post</a>
             </li>
+            <% if (!auth) { %>
+              <li class="nav-item">
+                <a class="nav-link" href="authlogin">Login</a>
+              </li>
             <li class="nav-item">
-              <a class="nav-link" href="authlogin">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="authregister">Register</a>
-            </li>
+                <a class="nav-link" href="authregister">Register</a>
+              </li>
+            <% }
+            else { %>
+              <li class="nav-item">
+                <a class="nav-link" href="authlogout">Logout</a>
+              </li>
+            <% }
+             %>
          
            
            

@@ -4,17 +4,17 @@ const mongoose=require('mongoose');
 const UserSchema=new mongoose.Schema({
     username: {
         type: String,
-        required: true,
+        required: [true, 'Please provide your user name'],
         unique: true
     },
     email: {
         type: String,
-        required: true,
+        required: [true,'Please provide your email'],
         unique: true
     },
     password:{
     type: String,
-    required: true
+    required: [true, 'Please provide a strong password']
     }
 })//just like middleware
 UserSchema.pre('save',function(next){
