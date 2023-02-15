@@ -96,6 +96,6 @@ app.use((req,res)=>{
 
 
 
-app.listen(3010,()=>{
-    console.log('server started at port 3000');
+app.listen(process.env.PORT,()=>{
+    console.log(`App listening on port ${process.env.PORT}`);
 })
