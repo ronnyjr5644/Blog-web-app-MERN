@@ -82,16 +82,20 @@ app.set("view engine","ejs")
 app.get('/',homePageController)
 app.get('/authlogin',redirectifAuthenticated,loginController)
 app.get('/authregister',redirectifAuthenticated,createUserController)
-app.get('/authlogout',logoutController)
+app.get('/authlogout',auth,logoutController)
 app.get('/post/:id',getPostController)
 app.get('/posts',auth,createPostController);
 app.post('/postsstore',auth,storePost,storePostController);
 app.post('/userregister',redirectifAuthenticated,storeUserController);
 app.post('/userlogin',redirectifAuthenticated,loginUserController)
 
+app.use((req,res)=>{
+    res.render('not-found')
+})
 
 
 
-app.listen(3007,()=>{
+
+app.listen(3010,()=>{
     console.log('server started at port 3000');
 })

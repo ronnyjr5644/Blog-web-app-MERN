@@ -20,6 +20,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/clean-blog.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 
   </head>
 
@@ -80,15 +81,7 @@
 
     <!-- Main Content -->
    <div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <form action="/postsstore" method="POST">
-              <div class="control-group">
-                <div class="form-group floating-label-form-group controls">
-                    <label>Username</label>
-                    <input type="text" placeholder="username...." name="username" class="form-control">
-                </div>
-            </div>
+        <form action="/postsstore" method="POST">
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Title</label>
@@ -104,7 +97,7 @@
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Content</label>
-                        <textarea name="content" placeholder="content...." id="" cols="30" rows="10" class="form-control"></textarea>
+                        <textarea id="content" name="content" placeholder="content...." id="" cols="30" rows="10" class="form-control"></textarea>
                     </div>
                 </div>
                
@@ -163,6 +156,19 @@
 
     <!-- Custom scripts for this template -->
     <script src="/js/clean-blog.min.js"></script>
+
+    <!-- //summer note -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#content').summernote({
+                placeholder: 'Hello stand alone ui',
+                tabsize: 2,
+                height: 100
+            });
+        });
+    </script>
 
   </body>
 
