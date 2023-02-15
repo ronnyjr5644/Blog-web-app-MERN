@@ -78,7 +78,6 @@ const redirectifAuthenticated=require("./middleware/redirectifAuthenticated")
 // app.use('/postsstore',storePost)
 // app.use('/posts',auth)
 app.set("view engine","ejs")
-
 app.get('/',homePageController)
 app.get('/authlogin',redirectifAuthenticated,loginController)
 app.get('/authregister',redirectifAuthenticated,createUserController)
