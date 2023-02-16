@@ -5,13 +5,14 @@ const express=require('express');
 const edge=require('edge.js')
 const dotenv=require('dotenv')
 dotenv.config({path:'./congig.env'});
+const multer=require('multer')
 const expressSession=require('express-session')
 const connectMongo=require('connect-mongo')
 const bodyParser=require('body-parser')  //parses the post req coming from the browser and give it to us in req.body
-
+const compression=require('compression')
 const mongoose=require('mongoose');
 const app=new express();
-
+const upload=multer({dest: 'public/img'})
 const connectFlash=require('connect-flash');
 
 
@@ -29,11 +30,6 @@ mongoose.connect(process.env.DATABASE,{useNewUrlParser:true,useCreateIndex:true,
 app.use(connectFlash())
 
 //app.set('view engine', 'ejs');
-
-
-
-
-
 // const testBlog=new Blog({
 //     title:'My first blosad',
 //     description:'This is my first asdblog',
@@ -75,6 +71,7 @@ app.use(bodyParser.urlencoded({extended:true}))
 const storePost=require('./middleware/storePost')
 const auth=require("./middleware/auth");
 const redirectifAuthenticated=require("./middleware/redirectifAuthenticated")
+app.use(compression())
 // app.use('/postsstore',storePost)
 // app.use('/posts',auth)
 app.set("view engine","ejs")
